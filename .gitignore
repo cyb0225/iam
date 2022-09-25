@@ -83,3 +83,4 @@ tags
 ## S/MIME message
 *.smime
 
+./tmp
