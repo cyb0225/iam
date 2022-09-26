@@ -5,6 +5,8 @@
 
 package main
 
-func main() {
+import "github.com/cyb0225/iam/internal/apiserver"
 
+func main() {
+	apiserver.Run()
 }

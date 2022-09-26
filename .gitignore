@@ -83,4 +83,9 @@ tags
 ## S/MIME message
 *.smime
 
+## app
 ./tmp
+
+./config/config.yml
+./config/config.yaml
+./config/config.ini

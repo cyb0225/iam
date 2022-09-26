@@ -5,7 +5,33 @@
 
 package redis
 
-type Option struct{}
+import (
+	"github.com/go-redis/redis"
+)
 
-func New() {
+var (
+	DB *redis.Client
+)
+
+type Option struct {
+	Addr     string `yaml:"addr"`
+	Password string `yaml:"password"` // if password is "", it means no password set.
+	DB       int    `yaml:"DB"`
+}
+
+// New returns a client to the Redis Server specified by opts.
+func New(opts Option) (*redis.Client, error) {
+	DB = redis.NewClient(&redis.Options{
+		Addr:     opts.Addr,
+		Password: opts.Password,
+		DB:       opts.DB,
+	})
+
+	// check connect
+	_, err := DB.Ping().Result()
+	if err != nil {
+		return nil, err
+	}
+
+	return DB, nil
 }
