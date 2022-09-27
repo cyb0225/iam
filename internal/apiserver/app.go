@@ -13,7 +13,7 @@ import (
 	"github.com/cyb0225/iam/pkg/shutdown"
 )
 
-// Run start apiserver Server
+// Run start apiserver Server.
 func Run() {
 	// created command.
 
@@ -26,7 +26,7 @@ func Run() {
 		Handler: router,
 	}
 
-	// start http server
+	// start server server
 	go func() {
 		if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("s.ListenAndServe err: %v", err)

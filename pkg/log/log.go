@@ -30,7 +30,7 @@ type Option struct {
 }
 
 // New create logger instance with options
-// it can log into
+// it can log into.
 func New(opts Option) (*zap.Logger, error) {
 	infoWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   opts.AccessLog,

@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-// WithTimeout graceful shutdown
+// WithTimeout graceful shutdown.
 func WithTimeout(s *http.Server, timeout time.Duration) {
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)

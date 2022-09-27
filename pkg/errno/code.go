@@ -11,9 +11,7 @@ import (
 	"sync"
 )
 
-var (
-	unknownCoder Coder = Coder{1, http.StatusInternalServerError, "An internal server error occurred"}
-)
+var unknownCoder Coder = Coder{1, http.StatusInternalServerError, "An internal server error occurred"}
 
 type Coder struct {
 	// C refers to the integer code of the ErrCode.
@@ -25,7 +23,7 @@ type Coder struct {
 	Msg string
 }
 
-// New create an instance of Coder
+// New create an instance of Coder.
 func New(code int, httpStatus int, msg string) Coder {
 	return Coder{
 		C:    code,
@@ -37,7 +35,6 @@ func New(code int, httpStatus int, msg string) Coder {
 // Code returns the integer code of the coder.
 func (coder Coder) Code() int {
 	return coder.C
-
 }
 
 // String implements stringer. String returns the external error message,

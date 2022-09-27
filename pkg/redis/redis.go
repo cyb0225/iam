@@ -9,9 +9,7 @@ import (
 	"github.com/go-redis/redis"
 )
 
-var (
-	DB *redis.Client
-)
+var DB *redis.Client
 
 type Option struct {
 	Addr     string `yaml:"addr"`

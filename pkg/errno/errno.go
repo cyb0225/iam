@@ -17,7 +17,7 @@ type withCode struct {
 	err  error
 }
 
-// WithCode create err with code and error
+// WithCode create err with code and error.
 func WithCode(code int, err error) error {
 	return &withCode{
 		code: code,
@@ -25,7 +25,7 @@ func WithCode(code int, err error) error {
 	}
 }
 
-// WithCodef create err with code and string
+// WithCodef create err with code and string.
 func WithCodef(code int, format string, args ...interface{}) error {
 	return &withCode{
 		code: code,
@@ -41,16 +41,15 @@ func (c *withCode) Error() string {
 	return c.err.Error()
 }
 
-// StackError return the row error, can be used to print stack information
+// StackError return the row error, can be used to print stack information.
 func StackError(err error) error {
 	if c, ok := err.(*withCode); ok {
 		return c.err
 	}
-
 	return err
 }
 
-// Wrap a string message to error
+// Wrap a string message to error.
 func Wrap(err error, msg string) error {
 	if c, ok := err.(*withCode); ok {
 		c.err = pkgerr.Wrap(c.err, msg)
@@ -60,7 +59,7 @@ func Wrap(err error, msg string) error {
 	return pkgerr.Wrap(err, msg)
 }
 
-// Is check if two error types are equal
+// Is check if two error types are equal.
 func Is(lhs, rhs error) bool {
 	if c, ok := lhs.(*withCode); ok {
 		lhs = c.err
@@ -73,7 +72,7 @@ func Is(lhs, rhs error) bool {
 }
 
 // Unwrap returns the result of calling the Unwrap method on err,
-//if err's type contains an Unwrap method returning error. Otherwise, Unwrap returns nil.
+// if errs type contains an Unwrap method returning error. Otherwise, Unwrap returns nil.
 func Unwrap(err error) error {
 	if c, ok := err.(*withCode); ok {
 		return errors.Unwrap(c.err)

@@ -31,9 +31,19 @@ func TestNew(t *testing.T) {
 		LogOpt:                log,
 	}
 
-	_, err := New(opts)
-	if err != nil {
-		t.Fatalf("unexpected err or check mysql server's config: %v", err)
-	}
+	t.Run("normal test", func(t *testing.T) {
+		_, err := New(opts)
+		if err != nil {
+			t.Fatalf("unexpected err or check mysql server's config: %v", err)
+		}
+	})
+
+	t.Run("test log in logfile", func(t *testing.T) {
+		opts.LogOpt.LogFile = "db.log"
+		_, err := New(opts)
+		if err != nil {
+			t.Fatalf("unexpected err or check mysql server's config: %v", err)
+		}
+	})
 
 }

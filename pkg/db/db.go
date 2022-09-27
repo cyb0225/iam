@@ -18,9 +18,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var (
-	DB *gorm.DB
-)
+var DB *gorm.DB
 
 type Option struct {
 	Host                  string        `yaml:"host"`
@@ -42,9 +40,8 @@ type LogOption struct {
 	Colorful                  bool          `yaml:"colorful"`                  // log with color
 }
 
-// New Open initialize db session based on opts
+// New Open initialize db session based on opts.
 func New(opts Option) (*gorm.DB, error) {
-
 	// if the version of mysql is lower than 8.0, then change to charset from `utf8mb4` to `utf8`
 	dsn := fmt.Sprintf(`%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=%t&loc=%s`,
 		opts.Username,
@@ -62,7 +59,12 @@ func New(opts Option) (*gorm.DB, error) {
 	case "stderr":
 		logWriter = os.Stderr
 	default:
-
+		// stored in that file.
+		f, err := os.OpenFile(opts.LogOpt.LogFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 6)
+		if err != nil {
+			return nil, err
+		}
+		logWriter = f
 	}
 
 	newLogger := logger.New(

@@ -4,3 +4,5 @@
 **/
 
 package v1
+
+type UserSrv interface{}

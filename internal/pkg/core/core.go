@@ -6,9 +6,12 @@
 package core
 
 import (
+	"github.com/cyb0225/iam/pkg/log"
+	"go.uber.org/zap"
+	"net/http"
+
 	"github.com/cyb0225/iam/pkg/errno"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type response struct {
@@ -23,9 +26,18 @@ func WriteResponse(c *gin.Context, err error, data interface{}) {
 	if err != nil {
 		coder := errno.ParseCoder(err)
 		if coder.Code() >= 200 && coder.Code() < 300 {
-			// TODO: do a info log
+			log.Logger.Info("logical error",
+				zap.Int("http", coder.HTTPStatus()),
+				zap.Int("code", coder.Code()),
+				zap.Error(err),
+			)
 		} else {
-			// TODO: do a error log.
+			// log stack trace.
+			log.Logger.Error("unexpected error",
+				zap.Int("http", coder.HTTPStatus()),
+				zap.Int("code", coder.Code()),
+				zap.Any("error", errno.StackError(err)),
+			)
 		}
 		c.JSON(coder.HTTPStatus(), response{
 			Code: coder.Code(),

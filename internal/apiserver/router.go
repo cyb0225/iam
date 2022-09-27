@@ -15,9 +15,7 @@ func InitRouter() *gin.Engine {
 }
 
 func initMiddleware(r *gin.Engine) {
-
 }
 
 func initController(r *gin.Engine) {
-
 }
