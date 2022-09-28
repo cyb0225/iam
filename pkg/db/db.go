@@ -7,6 +7,7 @@ package db
 
 import (
 	"fmt"
+	"github.com/spf13/pflag"
 	"io"
 	"log"
 	"os"
@@ -102,4 +103,17 @@ func New(opts Option) (*gorm.DB, error) {
 	DB = db
 
 	return DB, nil
+}
+
+// Validate check the options valid when load a config file.
+func (o *Option) Validate() []error {
+	var err []error
+
+	return err
+}
+
+// Flags set flags to cobra set.
+func (o *Option) Flags() (fs *pflag.FlagSet) {
+
+	return
 }

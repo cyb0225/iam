@@ -6,6 +6,7 @@
 package apiserver
 
 import (
+	"github.com/cyb0225/iam/pkg/app"
 	"log"
 	"net/http"
 	"time"
@@ -13,8 +14,17 @@ import (
 	"github.com/cyb0225/iam/pkg/shutdown"
 )
 
-// Run start apiserver Server.
-func Run() {
+// NewApp create a command project frame.
+func NewApp(name, basename string) *app.App {
+	app := app.NewApp(
+		name,
+		basename,
+	)
+	return app
+}
+
+// run start apiserver Server.
+func run() {
 	// created command.
 
 	// load configs.

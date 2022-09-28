@@ -21,6 +21,7 @@ type App struct {
 	args        cobra.PositionalArgs
 	noVersion   bool // if the app have version command
 	noConfig    bool // if the app have a config file
+	opt         CliOption
 }
 
 type Option func(app *App)
@@ -56,10 +57,17 @@ func WithDescription(desc string) Option {
 	}
 }
 
-// WithArgs set app's args func.
+// WithArgs set app's args operator func.
 func WithArgs(args cobra.PositionalArgs) Option {
 	return func(app *App) {
 		app.args = args
+	}
+}
+
+// WithOption set app's option.
+func WithOption(opt CliOption) Option {
+	return func(app *App) {
+		app.opt = opt
 	}
 }
 

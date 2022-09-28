@@ -8,3 +8,9 @@ package apiserver
 // Option stored the whole options that apiserver needs.
 type Option struct {
 }
+
+// NewOption new a option.
+func NewOption() *Option {
+	opt := &Option{}
+	return opt
+}
