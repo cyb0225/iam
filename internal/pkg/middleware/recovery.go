@@ -8,11 +8,12 @@ package middleware
 import (
 	"github.com/cyb0225/iam/pkg/log"
 	"github.com/gin-gonic/gin"
+	"github.com/jordan-wright/email"
 	"go.uber.org/zap"
 	"runtime/debug"
 )
 
-func Recovery() gin.HandlerFunc {
+func Recovery(email *email.Pool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {

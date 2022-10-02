@@ -837,7 +837,7 @@ issues:
       linters:
         - tagliatelle
 
-    - path: (pkg/app/.*)\.go
+    - path: (pkg/server/.*)\.go
       linters:
         - deadcode
         - unused

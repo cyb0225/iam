@@ -88,6 +88,10 @@ tags
 
 .idea
 
+*.log
+
+storage
+
 ./config/config.yml
 ./config/config.yaml
 ./config/config.ini

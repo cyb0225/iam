@@ -8,5 +8,5 @@ package main
 import "github.com/cyb0225/iam/internal/apiserver"
 
 func main() {
-	apiserver.NewApp("apiserver", "apiserver")
+	apiserver.Run()
 }

@@ -4,3 +4,9 @@
 **/
 
 package code
+
+// DataBase
+const (
+	// ErrDatabase - 500: Database error
+	ErrDatabase int = iota + 100001
+)

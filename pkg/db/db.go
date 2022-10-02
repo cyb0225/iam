@@ -8,6 +8,7 @@ package db
 import (
 	"fmt"
 	"github.com/spf13/pflag"
+	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"log"
 	"os"
@@ -29,14 +30,14 @@ type Option struct {
 	Database              string        `yaml:"database"`
 	MaxIdleConnections    int           `yaml:"maxIdleConnections"`
 	MaxOpenConnections    int           `yaml:"maxOpenConnections"`
-	MaxConnectionLifeTime time.Duration `yaml:"maxConnectionLifeTime"`
+	MaxConnectionLifeTime time.Duration `yaml:"maxConnectionLifeTime"` // hour
 	LogOpt                LogOption     `yaml:"logOpt"`
 }
 
 type LogOption struct {
-	LogLevel                  int           `yaml:"logLevel"` // Silent 1 、Error 2、Warn 3、Info 4
-	LogFile                   string        `yaml:"logFile"`  // if it is stdout/stderr then log to the stdout/stderr.
-	SlowThreshold             time.Duration `yaml:"slowThreshold"`
+	LogLevel                  int           `yaml:"logLevel"`                  // Silent 1 、Error 2、Warn 3、Info 4
+	LogFile                   string        `yaml:"logFile"`                   // if it is stdout/stderr then log to the stdout/stderr.
+	SlowThreshold             time.Duration `yaml:"slowThreshold"`             //ms
 	IgnoreRecordNotFoundError bool          `yaml:"ignoreRecordNotFoundError"` // ignored ErrRecordNotFound
 	Colorful                  bool          `yaml:"colorful"`                  // log with color
 }
@@ -61,17 +62,19 @@ func New(opts Option) (*gorm.DB, error) {
 		logWriter = os.Stderr
 	default:
 		// stored in that file.
-		f, err := os.OpenFile(opts.LogOpt.LogFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 6)
-		if err != nil {
-			return nil, err
+		logWriter = &lumberjack.Logger{
+			Filename:   opts.LogOpt.LogFile,
+			MaxSize:    100,
+			MaxAge:     7,
+			MaxBackups: 10,
+			Compress:   false,
 		}
-		logWriter = f
 	}
 
 	newLogger := logger.New(
 		log.New(logWriter, "\r\n", log.LstdFlags),
 		logger.Config{
-			SlowThreshold:             opts.LogOpt.SlowThreshold,
+			SlowThreshold:             opts.LogOpt.SlowThreshold * time.Millisecond,
 			LogLevel:                  logger.LogLevel(opts.LogOpt.LogLevel),
 			IgnoreRecordNotFoundError: opts.LogOpt.IgnoreRecordNotFoundError,
 			Colorful:                  opts.LogOpt.Colorful,
@@ -95,7 +98,7 @@ func New(opts Option) (*gorm.DB, error) {
 	sqlDB.SetMaxOpenConns(opts.MaxOpenConnections)
 
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
-	sqlDB.SetConnMaxLifetime(opts.MaxConnectionLifeTime)
+	sqlDB.SetConnMaxLifetime(opts.MaxConnectionLifeTime * time.Second)
 
 	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 	sqlDB.SetMaxIdleConns(opts.MaxIdleConnections)

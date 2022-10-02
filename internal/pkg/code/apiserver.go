@@ -4,3 +4,9 @@
 **/
 
 package code
+
+// User
+const (
+	// ErrUserNotFound - 404: User not found
+	ErrUserNotFound = iota + 200001
+)
