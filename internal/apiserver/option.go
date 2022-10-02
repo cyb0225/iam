@@ -10,15 +10,14 @@ import (
 	"github.com/cyb0225/iam/pkg/db"
 	"github.com/cyb0225/iam/pkg/email"
 	"github.com/cyb0225/iam/pkg/log"
-	"github.com/cyb0225/iam/pkg/redis"
 	"github.com/cyb0225/iam/pkg/server"
 	"github.com/spf13/viper"
 )
 
 // Option stored the whole options that apiserver needs.
 type Option struct {
-	Mysql  db.Option     `yaml:"mysql"`
-	Redis  redis.Option  `yaml:"redis"`
+	Mysql db.Option `yaml:"mysql"`
+	//Redis  redis.Option  `yaml:"redis"`
 	Log    log.Option    `yaml:"log"`
 	Email  email.Option  `yaml:"email"`
 	Server server.Option `yaml:"server"`

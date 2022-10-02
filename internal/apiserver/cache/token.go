@@ -5,10 +5,17 @@
 
 package cache
 
-import "context"
+import (
+	"context"
+	"time"
+)
+
+type TokenValue struct {
+	UserID uint64
+}
 
 type TokenCache interface {
-	Create(ctx context.Context)
-	Get(ctx context.Context)
-	Delete(ctx context.Context)
+	Create(ctx context.Context, token string, value *TokenValue, timeout time.Duration) error
+	Get(ctx context.Context, token string) (*TokenValue, error)
+	Delete(ctx context.Context, token string) error
 }

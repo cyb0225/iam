@@ -7,6 +7,12 @@ package code
 
 // User
 const (
-	// ErrUserNotFound - 404: User not found
+	// ErrUserNotFound - 404: User not found.
 	ErrUserNotFound = iota + 200001
+
+	// ErrTokenNotExisted - 404: Token not existed.
+	ErrTokenNotExisted
+
+	// ErrCodeNotExisted - 404: Code not existed.
+	ErrCodeNotExisted
 )
