@@ -57,9 +57,3 @@ func NewOption(config string) (*Option, error) {
 	fmt.Printf("%#+v", *opts)
 	return opts, nil
 }
-
-// check the validates of options
-func valid() []error {
-	var err []error
-	return err
-}

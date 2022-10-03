@@ -8,6 +8,7 @@ package apiserver
 import (
 	"github.com/cyb0225/iam/pkg/cache"
 	"github.com/cyb0225/iam/pkg/db"
+	"github.com/cyb0225/iam/pkg/email"
 	zaplog "github.com/cyb0225/iam/pkg/log"
 	"github.com/cyb0225/iam/pkg/server"
 	"github.com/spf13/pflag"
@@ -65,9 +66,9 @@ func InitRelies(opts *Option) {
 		log.Fatalf("init go-cache failed: %v", err)
 	}
 
-	//if _, err := email.New(opts.Email); err != nil {
-	//	log.Fatalf("init email failed: %v", err)
-	//}
+	if _, err := email.New(opts.Email); err != nil {
+		log.Fatalf("init email failed: %v", err)
+	}
 
 	if _, err := zaplog.New(opts.Log); err != nil {
 		log.Fatalf("init zap log failed: %v", err)

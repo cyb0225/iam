@@ -7,7 +7,6 @@ package db
 
 import (
 	"fmt"
-	"github.com/spf13/pflag"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"log"
@@ -23,24 +22,24 @@ import (
 var DB *gorm.DB
 
 type Option struct {
-	Host                  string        `yaml:"host"`
-	Port                  string        `yaml:"port"`
-	Username              string        `yaml:"username"`
-	Password              string        `yaml:"password"`
-	Database              string        `yaml:"database"`
-	MaxIdleConnections    int           `yaml:"maxIdleConnections"`
-	MaxOpenConnections    int           `yaml:"maxOpenConnections"`
-	MaxConnectionLifeTime time.Duration `yaml:"maxConnectionLifeTime"` // hour
-	LogOpt                LogOption     `yaml:"logOpt"`
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Database string `yaml:"database"`
+	LogFile  string `yaml:"logFile"`
 }
 
-type LogOption struct {
-	LogLevel                  int           `yaml:"logLevel"`                  // Silent 1 、Error 2、Warn 3、Info 4
-	LogFile                   string        `yaml:"logFile"`                   // if it is stdout/stderr then log to the stdout/stderr.
-	SlowThreshold             time.Duration `yaml:"slowThreshold"`             //ms
-	IgnoreRecordNotFoundError bool          `yaml:"ignoreRecordNotFoundError"` // ignored ErrRecordNotFound
-	Colorful                  bool          `yaml:"colorful"`                  // log with color
-}
+var (
+	// connect pool
+	maxIdleConnections    = 100
+	maxOpenConnections    = 100
+	maxConnectionLifeTime = time.Hour
+
+	// log
+	slowThreshold = 200 * time.Millisecond
+	logLevel      = logger.LogLevel(logger.Error)
+)
 
 // New Open initialize db session based on opts.
 func New(opts Option) (*gorm.DB, error) {
@@ -55,7 +54,7 @@ func New(opts Option) (*gorm.DB, error) {
 		"Local")
 
 	var logWriter io.Writer
-	switch opts.LogOpt.LogFile {
+	switch opts.LogFile {
 	case "stdout":
 		logWriter = os.Stdout
 	case "stderr":
@@ -63,7 +62,7 @@ func New(opts Option) (*gorm.DB, error) {
 	default:
 		// stored in that file.
 		logWriter = &lumberjack.Logger{
-			Filename:   opts.LogOpt.LogFile,
+			Filename:   opts.LogFile,
 			MaxSize:    100,
 			MaxAge:     7,
 			MaxBackups: 10,
@@ -74,10 +73,10 @@ func New(opts Option) (*gorm.DB, error) {
 	newLogger := logger.New(
 		log.New(logWriter, "\r\n", log.LstdFlags),
 		logger.Config{
-			SlowThreshold:             opts.LogOpt.SlowThreshold * time.Millisecond,
-			LogLevel:                  logger.LogLevel(opts.LogOpt.LogLevel),
-			IgnoreRecordNotFoundError: opts.LogOpt.IgnoreRecordNotFoundError,
-			Colorful:                  opts.LogOpt.Colorful,
+			SlowThreshold:             slowThreshold,
+			LogLevel:                  logLevel,
+			IgnoreRecordNotFoundError: true,
+			Colorful:                  false,
 		},
 	)
 
@@ -95,28 +94,15 @@ func New(opts Option) (*gorm.DB, error) {
 	// set connect pool
 
 	// SetMaxOpenConns sets the maximum number of open connections to the database.
-	sqlDB.SetMaxOpenConns(opts.MaxOpenConnections)
+	sqlDB.SetMaxOpenConns(maxOpenConnections)
 
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
-	sqlDB.SetConnMaxLifetime(opts.MaxConnectionLifeTime * time.Second)
+	sqlDB.SetConnMaxLifetime(maxConnectionLifeTime)
 
 	// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-	sqlDB.SetMaxIdleConns(opts.MaxIdleConnections)
+	sqlDB.SetMaxIdleConns(maxIdleConnections)
 
 	DB = db
 
 	return DB, nil
-}
-
-// Validate check the options valid when load a config file.
-func (o *Option) Validate() []error {
-	var err []error
-
-	return err
-}
-
-// Flags set flags to cobra set.
-func (o *Option) Flags() (fs *pflag.FlagSet) {
-
-	return
 }

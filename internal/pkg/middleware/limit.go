@@ -13,9 +13,15 @@ import (
 	"time"
 )
 
+var (
+	fillInterval       = time.Second
+	cap          int64 = 100
+	quantum      int64 = 100
+)
+
 // RateLimitMiddleware set a rate limit bucket.
 //  limit the number of requests in order to avoid excessive requests causing server crashes.
-func RateLimitMiddleware(fillInterval time.Duration, cap, quantum int64) gin.HandlerFunc {
+func RateLimitMiddleware() gin.HandlerFunc {
 	bucket := ratelimit.NewBucketWithQuantum(fillInterval, cap, quantum)
 	return func(c *gin.Context) {
 		if bucket.TakeAvailable(1) < 1 {

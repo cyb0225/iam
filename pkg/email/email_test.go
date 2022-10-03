@@ -6,30 +6,44 @@
 package email
 
 import (
-	"github.com/jordan-wright/email"
+	"github.com/stretchr/testify/assert"
 	"testing"
-	"time"
 )
 
 // TestSendEmail used to test
 func TestSendEmail(t *testing.T) {
+	sends := []string{"yeebingchen@qq.com"}
+	subject := "subject"
+	text := []byte("text")
+
+	t.Run("with out init email Pool", func(t *testing.T) {
+		err := Send(sends, subject, text)
+		assert.NotEqual(t, nil, err)
+	})
+
 	opts := Option{
-		SMTPKey:         "kyxrxqinzltbfagd",
-		FromEmail:       "yeebing<yeebingchen@qq.com>",
-		EmailServerAddr: "smtp.qq.com:25",
-		EmailServerHost: "smtp.qq.com",
+		SMTPKey:   "123",
+		FromEmail: "yeebingchen@qq.com",
 	}
 
 	if _, err := New(opts); err != nil {
 		t.Fatal("init email failed")
 	}
 
-	e := email.NewEmail()
-	e.From = "yeebing<yeebingchen@qq.com>"
-	e.To = []string{"yeebingchen@qq.com"}
-	e.Subject = "测试邮件"
-	e.Text = []byte("测试邮件内容")
-	if err := Pool.Send(e, time.Second*10); err != nil {
-		t.Fatalf("send email failed: %v", err)
+	t.Run("smtp_key error", func(t *testing.T) {
+		err := Send(sends, subject, text)
+		assert.NotEqual(t, nil, err)
+	})
+
+	opts.SMTPKey = "tqzrnigzcbjiehbc"
+
+	if _, err := New(opts); err != nil {
+		t.Fatal("init email failed")
 	}
+
+	t.Run("success", func(t *testing.T) {
+		err := Send(sends, subject, text)
+		assert.Equal(t, nil, err)
+	})
+
 }

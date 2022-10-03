@@ -14,14 +14,10 @@ import (
 // TestLog test log into files and log into console.
 func TestLog(t *testing.T) {
 	opts := Option{
-		Level:      "debug",
-		MaxSize:    1,
-		MaxAge:     10,
-		MaxBackups: 3,
-		Compress:   false,
-		AccessLog:  "../../tmp/log/access.log",
-		ErrorLog:   "../../tmp/log/error.log",
-		Console:    true,
+		Level:     "debug",
+		AccessLog: "../../tmp/log/access.log",
+		ErrorLog:  "../../tmp/log/error.log",
+		Console:   true,
 	}
 
 	t.Run("test unknown level", func(t *testing.T) {
@@ -44,12 +40,6 @@ func TestLog(t *testing.T) {
 		logger.Warn("msg", zap.String("key", "value"))
 		logger.Error("msg", zap.String("key", "value"))
 	})
-
-	//t.Run("test file split", func(t *testing.T) {
-	//	for i := 0; i < 100000; i++ {
-	//		logger.Info("msg", zap.String("key", "value"))
-	//	}
-	//})
 
 	t.Run("test info log with json writer", func(t *testing.T) {
 		infoOpts := opts

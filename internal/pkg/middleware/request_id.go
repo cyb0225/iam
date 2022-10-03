@@ -11,13 +11,13 @@ import (
 )
 
 const (
-// XRequestIDKey defines X-Request-ID key string.
-//XRequestIDKey = "X-Request-ID"
+	// XRequestIDKey defines X-Request-ID key string.
+	XRequestIDKey = "X-Request-ID"
 )
 
 // RequestID set request id to gin.context.
 // XRequestIDKey is show which header key will store the request ID.
-func RequestID(XRequestIDKey string) gin.HandlerFunc {
+func RequestID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Check for incoming header, use it if exists
 		rid := c.GetHeader(XRequestIDKey)

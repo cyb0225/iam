@@ -13,12 +13,8 @@ import (
 )
 
 type Option struct {
-	Mode            string        `yaml:"mode"` // run mode, debug or release
-	Port            string        `yaml:"port"`
-	ReadTimeout     time.Duration `yaml:"readTimeout"`  // second
-	WriteTimeout    time.Duration `yaml:"writeTimeout"` // second
-	MaxHeaderBytes  int           `yaml:"maxHeaderBytes"`
-	ShutdownTimeout time.Duration `yaml:"shutdownTimeout"` // second
+	Mode string `yaml:"mode"` // run mode, debug or release
+	Port string `yaml:"port"`
 }
 
 // Run start http server.
@@ -27,9 +23,9 @@ func Run(opts Option, handler http.Handler) {
 	s := &http.Server{
 		Addr:           ":" + opts.Port,
 		Handler:        handler,
-		ReadTimeout:    opts.ReadTimeout * time.Second,
-		WriteTimeout:   opts.WriteTimeout * time.Second,
-		MaxHeaderBytes: opts.MaxHeaderBytes,
+		ReadTimeout:    60 * time.Second,
+		WriteTimeout:   60 * time.Second,
+		MaxHeaderBytes: 1500,
 	}
 
 	// start http server
@@ -40,5 +36,5 @@ func Run(opts Option, handler http.Handler) {
 		}
 	}()
 
-	shutdown.WithTimeout(s, opts.ShutdownTimeout*time.Second)
+	shutdown.WithTimeout(s, 5*time.Second)
 }

@@ -11,7 +11,6 @@ import (
 	"github.com/cyb0225/iam/pkg/email"
 	"github.com/gin-gonic/gin"
 	"os"
-	"time"
 )
 
 func InitRouter(opts *Option) *gin.Engine {
@@ -33,10 +32,10 @@ func InitRouter(opts *Option) *gin.Engine {
 
 func initMiddleware(e *gin.Engine, opts *Option) {
 	e.MaxMultipartMemory = 8 << 20 // 8 MiB, maximum file upload size supported.
-	e.Use(middleware.App("apiserver", "v1.0.0"))
-	e.Use(middleware.RequestID("X-Request-ID"))
-	e.Use(middleware.RateLimitMiddleware(time.Second, 100, 100))
-	e.Use(middleware.Cors(time.Second * 10))
+	e.Use(middleware.App())
+	e.Use(middleware.RequestID())
+	e.Use(middleware.RateLimitMiddleware())
+	e.Use(middleware.Cors())
 }
 
 func initController(r *gin.Engine, opts *Option) {
@@ -51,6 +50,7 @@ func initController(r *gin.Engine, opts *Option) {
 			userv1.GET("/list", userController.List)
 			userv1.POST("/login", userController.Login)
 			userv1.POST("/register", userController.Register)
+			userv1.GET("/code", userController.GetCode)
 			userv1.Use(middleware.TokenAuth())
 			userv1.DELETE("/logout", userController.Logout)
 			userv1.PUT("/update/password", userController.ChangePassword)

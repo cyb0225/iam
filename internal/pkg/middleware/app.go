@@ -7,10 +7,15 @@ package middleware
 
 import "github.com/gin-gonic/gin"
 
+var (
+	appName = "iam"
+	version = "v1.0.0"
+)
+
 // App set server server's information(server name and version)
-func App(name string, version string) gin.HandlerFunc {
+func App() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("app_name", name)
+		c.Set("app_name", appName)
 		c.Set("app_version", version)
 		c.Next()
 	}

@@ -19,32 +19,35 @@ var (
 )
 
 type Option struct {
-	Level      string `yaml:"level"`
-	MaxSize    int    `yaml:"maxSize"`    // MB
-	MaxAge     int    `yaml:"maxAge"`     // day
-	MaxBackups int    `yaml:"maxBackups"` // the number of files
-	Compress   bool   `yaml:"compress"`   // if compress the log
-	AccessLog  string `yaml:"accessLog"`
-	ErrorLog   string `yaml:"errorLog"`
-	Console    bool   `yaml:"console"` // console or json
+	Level     string `yaml:"level"`
+	AccessLog string `yaml:"accessLog"`
+	ErrorLog  string `yaml:"errorLog"`
+	Console   bool   `yaml:"console"` // console or json
 }
+
+var (
+	maxSize    = 100 // MB
+	maxAge     = 7   //days
+	maxBackups = 10
+	compress   = false
+)
 
 // New create logger instance with options
 // it can log into.
 func New(opts Option) (*zap.Logger, error) {
 	infoWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   opts.AccessLog,
-		MaxSize:    opts.MaxSize,
-		MaxBackups: opts.MaxBackups,
-		MaxAge:     opts.MaxAge,
-		Compress:   opts.Compress,
+		MaxSize:    maxSize,
+		MaxBackups: maxBackups,
+		MaxAge:     maxAge,
+		Compress:   compress,
 	})
 	errorWriteSyncer := zapcore.AddSync(&lumberjack.Logger{
 		Filename:   opts.ErrorLog,
-		MaxSize:    opts.MaxSize,
-		MaxBackups: opts.MaxBackups,
-		MaxAge:     opts.MaxAge,
-		Compress:   opts.Compress,
+		MaxSize:    maxSize,
+		MaxBackups: maxBackups,
+		MaxAge:     maxAge,
+		Compress:   compress,
 	})
 
 	var zapLevel zapcore.Level

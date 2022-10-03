@@ -1,45 +1,22 @@
+server:
+  mode: "debug"
+  port: "12345"
+
 mysql:
   host: "127.0.0.1"
   port: "3306"
   username: "root"
   password: "123456"
   database: "iam"
-  maxIdleConnections: 100
-  maxOpenConnections: 100
-  maxConnectionLifeTime: 1  #Hour
-  logOpt:
-    logLevel: 2 # ERROR
-    logFile: "./storage/mysql/error.log"
-    slowThreshold: 200 #ms
-    ignoreRecordNotFoundError: true
-    colorful: false
-
-redis:
-  addr: "127.0.0.1:6379"
-  password: "123456"
-  DB: 0
+  logFile: "./storage/db/db.log"
 
 log:
   level: "debug"
-  maxSize: 100 #MB
-  maxAge: 7 #day
-  maxBackups: 10
-  compress: false
   accessLog: "./storage/log/access.log"
   errorLog: "./storage/log/access.log"
   console: true
 
 email:
-  smtp_key: ""
+  smtp_key: "tqzrnigzcbjiehbc"
   from_email: "yeebingchen@qq.com"
-  email_server_addr: ""
-  email_server_host: ""
-  pool_cap: 10
 
-server:
-  mode: "debug"
-  port: "12345"
-  readTimeout: 60 #second
-  writeTimeout: 60 #second
-  maxHeaderBytes: 1500
-  shutdownTimeout: 5 #second
