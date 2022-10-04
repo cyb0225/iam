@@ -27,7 +27,7 @@ type UserSrv interface {
 	ChangeEmail(ctx context.Context, userID uint64, req *model.ChangeEmailRequest) error
 	Logout(ctx context.Context, token string) error
 	Update(ctx context.Context, userID uint64, request *model.UserUpdateRequest) error
-	UploadAvatar(ctx context.Context)
+	UploadAvatar(ctx context.Context, avatar string) error
 }
 
 var _ UserSrv = (*userService)(nil)
@@ -179,6 +179,7 @@ func (u *userService) Update(ctx context.Context, userID uint64, request *model.
 	return u.s.User().Update(ctx, userID, request)
 }
 
-func (u *userService) UploadAvatar(ctx context.Context) {
+func (u *userService) UploadAvatar(ctx context.Context, avatar string) error {
 
+	return nil
 }

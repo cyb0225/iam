@@ -42,7 +42,7 @@ func Run() {
 	// init main relies.
 	InitRelies(opts)
 
-	router := InitRouter(opts)
+	router := InitRouter(opts.Server.Mode)
 	server.Run(opts.Server, router)
 }
 

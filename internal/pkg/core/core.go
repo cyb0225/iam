@@ -46,8 +46,8 @@ func WriteResponse(c *gin.Context, err error, data interface{}) {
 		return
 	}
 
-	// TODO: send success code back
 	c.JSON(http.StatusOK, response{
 		Code: 0,
+		Data: data,
 	})
 }

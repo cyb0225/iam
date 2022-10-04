@@ -33,4 +33,10 @@ const (
 
 	// ErrGetToken -400: Get Token from head failed.
 	ErrGetToken
+
+	// ErrGetTokenFromCtx -500: Get Token from context failed
+	ErrGetTokenFromCtx
+
+	// ErrGetUserIDFromCtx -500: Get User ID from context failed
+	ErrGetUserIDFromCtx
 )
