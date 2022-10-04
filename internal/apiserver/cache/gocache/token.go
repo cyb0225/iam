@@ -15,6 +15,7 @@ import (
 )
 
 var _ cache.TokenCache = (*tokens)(nil)
+var tokenTimeout = time.Hour * 24 * 7
 
 type tokens struct {
 	*cacheStore
@@ -24,8 +25,8 @@ func newTokens(store *cacheStore) *tokens {
 	return &tokens{cacheStore: store}
 }
 
-func (t *tokens) Create(ctx context.Context, token string, value *cache.TokenValue, timeout time.Duration) error {
-	t.ca.Set(token, value, timeout)
+func (t *tokens) Create(ctx context.Context, token string, value *cache.TokenValue) error {
+	t.ca.Set(token, value, tokenTimeout)
 	return nil
 }
 

@@ -20,13 +20,14 @@ type codes struct {
 }
 
 var _ cache.CodeCache = (*codes)(nil)
+var codeTimeout = time.Second * 120
 
 func newCodes(store *cacheStore) *codes {
 	return &codes{cacheStore: store}
 }
 
-func (c *codes) Create(ctx context.Context, code string, value *cache.CodeValue, timeout time.Duration) error {
-	c.ca.Set(code, value, timeout)
+func (c *codes) Create(ctx context.Context, code string, value *cache.CodeValue) error {
+	c.ca.Set(code, value, codeTimeout)
 	return nil
 }
 

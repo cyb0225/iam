@@ -5,8 +5,18 @@
 
 package user
 
-type User struct{}
+import (
+	"github.com/cyb0225/iam/internal/apiserver/cache"
+	v1 "github.com/cyb0225/iam/internal/apiserver/service/v1"
+	"github.com/cyb0225/iam/internal/apiserver/store"
+)
 
-func New() *User {
-	return &User{}
+type User struct {
+	srv v1.Service
+}
+
+func New(factory store.Factory, cache cache.Cache) *User {
+	return &User{
+		srv: v1.NewService(factory, cache),
+	}
 }

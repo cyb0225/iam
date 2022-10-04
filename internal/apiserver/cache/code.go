@@ -7,15 +7,14 @@ package cache
 
 import (
 	"context"
-	"time"
 )
 
 type CodeValue struct {
-	ID uint64
+	Email string
 }
 
 type CodeCache interface {
-	Create(ctx context.Context, code string, value *CodeValue, timeout time.Duration) error
+	Create(ctx context.Context, code string, value *CodeValue) error
 	Delete(ctx context.Context, code string) error
 	Get(ctx context.Context, code string) (*CodeValue, error)
 }

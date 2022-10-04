@@ -14,4 +14,10 @@ func init() {
 	errno.RegisterWithArgs(ErrUserNotFound, 404, "User not found")
 	errno.RegisterWithArgs(ErrTokenNotExisted, 404, "Token not existed")
 	errno.RegisterWithArgs(ErrCodeNotExisted, 404, "Code not existed")
+	errno.RegisterWithArgs(ErrPasswordRequired, 200, "Password does not meet requirements")
+	errno.RegisterWithArgs(ErrEmailRequired, 200, "Email does not meet requirements")
+	errno.RegisterWithArgs(ErrUserAlreadyExisted, 200, "User already existed")
+	errno.RegisterWithArgs(ErrSendEmail, 500, "Failed to send email")
+	errno.RegisterWithArgs(ErrPassword, 200, "Error password")
+	errno.RegisterWithArgs(ErrGetToken, 400, "Get Token from head failed")
 }

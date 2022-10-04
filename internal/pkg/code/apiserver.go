@@ -15,4 +15,22 @@ const (
 
 	// ErrCodeNotExisted - 404: Code not existed.
 	ErrCodeNotExisted
+
+	// ErrPasswordRequired - 200: Password does not meet requirements
+	ErrPasswordRequired
+
+	// ErrEmailRequired - 200: Email does not meet requirements
+	ErrEmailRequired
+
+	// ErrUserAlreadyExisted - 200: User already existed
+	ErrUserAlreadyExisted
+
+	// ErrSendEmail -500: Send email failed
+	ErrSendEmail
+
+	// ErrPassword -200: Error password
+	ErrPassword
+
+	// ErrGetToken -400: Get Token from head failed.
+	ErrGetToken
 )

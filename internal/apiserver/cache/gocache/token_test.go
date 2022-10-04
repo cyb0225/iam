@@ -29,10 +29,10 @@ func TestTokens(t *testing.T) {
 	tk.ca.Flush()
 	token := "token"
 	val := &cache.TokenValue{UserID: 10}
-	timeout := time.Second * 5
+	tokenTimeout = time.Second * 5
 
 	// create
-	err := tk.Create(context.Background(), token, val, timeout)
+	err := tk.Create(context.Background(), token, val)
 	assert.Equal(t, nil, err)
 
 	// get

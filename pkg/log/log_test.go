@@ -6,9 +6,10 @@
 package log
 
 import (
-	"testing"
-
+	"context"
+	"github.com/stretchr/testify/assert"
 	"go.uber.org/zap"
+	"testing"
 )
 
 // TestLog test log into files and log into console.
@@ -51,4 +52,26 @@ func TestLog(t *testing.T) {
 		logger.Debug("info level", zap.String("key", "value"))
 		logger.Info("info level", zap.String("key", "value"))
 	})
+}
+
+func TestWithRequestID(t *testing.T) {
+	opts := Option{
+		Level:     "debug",
+		AccessLog: "../../tmp/log/access.log",
+		ErrorLog:  "../../tmp/log/error.log",
+		Console:   true,
+	}
+
+	_, err := New(opts)
+	assert.Equal(t, nil, err)
+
+	t.Run("not set request ID", func(t *testing.T) {
+		WithRequestID(context.TODO()).Info("test", zap.String("str", "Str"))
+	})
+
+	t.Run("success", func(t *testing.T) {
+		ctx := context.WithValue(context.TODO(), KeyRequestID, "1")
+		WithRequestID(ctx).Info("test", zap.String("str", "Str"))
+	})
+
 }

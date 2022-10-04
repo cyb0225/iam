@@ -27,7 +27,10 @@ func newUsers(ds *datastore) *users {
 }
 
 func (u *users) Create(ctx context.Context, user *store.User) error {
-	return u.db.Create(&user).Error
+	if err := u.db.Create(&user).Error; err != nil {
+		return errno.WithCode(code.ErrUserAlreadyExisted, err)
+	}
+	return nil
 }
 
 func (u *users) Delete(ctx context.Context, userID uint64) error {
@@ -40,32 +43,43 @@ func (u *users) Delete(ctx context.Context, userID uint64) error {
 }
 
 // Update user's Information
-func (u *users) Update(ctx context.Context, userID uint64, user *store.User) error {
-	err := u.db.Model(&store.User{}).Where("id = ?", userID).Updates(user).Error
+func (u *users) Update(ctx context.Context, userID uint64, val any) error {
+	err := u.db.Model(&store.User{}).Where("id = ?", userID).Updates(val).Error
 	if err != nil {
 		return errno.WithCode(code.ErrDatabase, err)
 	}
 	return nil
 }
 
-// Get get user's information by id.
-func (u *users) Get(ctx context.Context, userID uint64) (*store.User, error) {
-	user := &store.User{}
-	err := u.db.Where("id = ?", userID).First(&user).Error
+// Get  user's information by id.
+// val is used to return the result.
+func (u *users) Get(ctx context.Context, userID uint64, val any) error {
+	err := u.db.Model(&store.User{}).Where("id = ?", userID).First(val).Error
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errno.WithCode(code.ErrUserNotFound, err)
+			return errno.WithCode(code.ErrUserNotFound, err)
 		}
-		return nil, errno.WithCode(code.ErrDatabase, err)
+		return errno.WithCode(code.ErrDatabase, err)
 	}
-	return user, nil
+	return nil
 }
 
-func (u *users) List(ctx context.Context) (*store.UserList, error) {
-	ret := &store.UserList{}
-	err := u.db.Find(&ret.Items).Error
+func (u *users) GetByAccount(ctx context.Context, account string, val any) error {
+	err := u.db.Model(&store.User{}).Where("account = ?", account).First(val).Error
 	if err != nil {
-		return nil, errno.WithCode(code.ErrDatabase, err)
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return errno.WithCode(code.ErrUserNotFound, err)
+		}
+		return errno.WithCode(code.ErrDatabase, err)
 	}
-	return ret, err
+	return nil
+}
+
+func (u *users) List(ctx context.Context, val any) error {
+	err := u.db.Model(&store.User{}).Find(val).Error
+	if err != nil {
+		return errno.WithCode(code.ErrDatabase, err)
+	}
+
+	return nil
 }

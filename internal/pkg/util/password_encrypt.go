@@ -5,6 +5,13 @@
 
 package util
 
-func PasswordEncrypt() {
+import (
+	"crypto/md5"
+	"fmt"
+)
 
+func PasswordEncrypt(password string) string {
+	data := md5.Sum([]byte(password))
+	md5str := fmt.Sprintf("%x", data) //将[]byte转成16进制
+	return md5str
 }

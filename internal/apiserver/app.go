@@ -58,12 +58,8 @@ func InitRelies(opts *Option) {
 		log.Fatalf("init mysql failed: %v", err)
 	}
 
-	//if _, err := redis.New(opts.Redis); err != nil {
-	//	log.Fatalf("init redis failed: %v", err)
-	//}
-
 	if _, err := cache.New(); err != nil {
-		log.Fatalf("init go-cache failed: %v", err)
+		log.Fatalf("init gocache failed: %v", err)
 	}
 
 	if _, err := email.New(opts.Email); err != nil {

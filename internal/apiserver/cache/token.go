@@ -7,7 +7,6 @@ package cache
 
 import (
 	"context"
-	"time"
 )
 
 type TokenValue struct {
@@ -15,7 +14,7 @@ type TokenValue struct {
 }
 
 type TokenCache interface {
-	Create(ctx context.Context, token string, value *TokenValue, timeout time.Duration) error
+	Create(ctx context.Context, token string, value *TokenValue) error
 	Get(ctx context.Context, token string) (*TokenValue, error)
 	Delete(ctx context.Context, token string) error
 }

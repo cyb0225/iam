@@ -38,7 +38,8 @@ type UserList struct {
 type UserStore interface {
 	Create(ctx context.Context, user *User) error
 	Delete(ctx context.Context, userID uint64) error
-	Update(ctx context.Context, userID uint64, user *User) error
-	Get(ctx context.Context, userID uint64) (*User, error)
-	List(ctx context.Context) (*UserList, error)
+	Update(ctx context.Context, userID uint64, val any) error
+	Get(ctx context.Context, userID uint64, val any) error
+	GetByAccount(ctx context.Context, account string, val any) error
+	List(ctx context.Context, val any) error
 }

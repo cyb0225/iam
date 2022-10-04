@@ -13,7 +13,6 @@ import (
 	"log"
 	"strconv"
 	"testing"
-	"time"
 )
 
 var (
@@ -21,25 +20,13 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	// init mysql gorm
-	logOpts := db.LogOption{
-		LogLevel:                  4,
-		SlowThreshold:             time.Millisecond * 200, // 200ms
-		LogFile:                   "stdout",
-		IgnoreRecordNotFoundError: true,
-		Colorful:                  true,
-	}
-
 	opts := db.Option{
-		Host:                  "127.0.0.1",
-		Port:                  "3306",
-		Username:              "root",
-		Password:              "123456",
-		Database:              "iam_test",
-		MaxIdleConnections:    100,
-		MaxOpenConnections:    100,
-		MaxConnectionLifeTime: 1 * time.Minute,
-		LogOpt:                logOpts,
+		Host:     "127.0.0.1",
+		Port:     "3306",
+		Username: "root",
+		Password: "123456",
+		Database: "iam_test",
+		LogFile:  "stdout",
 	}
 
 	DB, err := db.New(opts)
@@ -79,6 +66,73 @@ func TestUsers_Create(t *testing.T) {
 
 }
 
+type UserDemo struct {
+	ID    uint64
+	Nick  string
+	Email string
+}
+
+func TestUsers_Get(t *testing.T) {
+	clear(t)
+
+	user := &store.User{
+		Account:  "account",
+		Password: "password",
+		Email:    "email",
+		Nick:     "nick",
+	}
+
+	err := u.Create(context.Background(), user)
+	if err != nil {
+		t.Fatalf("unexpected error: %v\n", err)
+	}
+
+	t.Run("return nil", func(t *testing.T) {
+		got := &UserDemo{}
+		err := u.Get(context.Background(), user.ID, got)
+		assert.Equal(t, nil, err)
+		assert.Equal(t, user.ID, got.ID)
+		assert.Equal(t, user.Nick, got.Nick)
+	})
+
+	t.Run("record not found", func(t *testing.T) {
+		got := UserDemo{}
+		err := u.Get(context.Background(), user.ID+1, &got)
+		t.Log("record not found:", err)
+		assert.NotEqual(t, nil, err)
+	})
+
+}
+
+func TestUsers_GetByAccount(t *testing.T) {
+	clear(t)
+
+	user := &store.User{
+		Account:  "account",
+		Password: "password",
+		Email:    "email",
+		Nick:     "nick",
+	}
+
+	err := u.Create(context.Background(), user)
+	if err != nil {
+		t.Fatalf("unexpected error: %v\n", err)
+	}
+
+	t.Run("return nil", func(t *testing.T) {
+		got := &store.User{}
+		err := u.GetByAccount(context.Background(), user.Account, got)
+		assert.Equal(t, nil, err)
+		assert.Equal(t, user.Account, got.Account)
+	})
+
+	t.Run("record not found", func(t *testing.T) {
+		got := &store.User{}
+		err := u.GetByAccount(context.Background(), user.Account+user.Account, got)
+		assert.NotEqual(t, nil, err)
+	})
+}
+
 func TestUsers_Delete(t *testing.T) {
 	clear(t)
 
@@ -100,37 +154,8 @@ func TestUsers_Delete(t *testing.T) {
 	})
 }
 
-func TestUsers_Get(t *testing.T) {
-	clear(t)
-
-	user := &store.User{
-		Account:  "account",
-		Password: "password",
-		Email:    "email",
-		Nick:     "nick",
-	}
-
-	err := u.Create(context.Background(), user)
-	if err != nil {
-		t.Fatalf("unexpected error: %v\n", err)
-	}
-
-	t.Run("return nil", func(t *testing.T) {
-		got, err := u.Get(context.Background(), user.ID)
-		assert.Equal(t, nil, err)
-		assert.Equal(t, got.ID, user.ID)
-	})
-
-	t.Run("record not existed", func(t *testing.T) {
-		_, err := u.Get(context.Background(), user.ID+1)
-		if err == nil {
-			t.Fatalf("want error(record not found) got nil\n")
-		}
-	})
-
-}
-
 func TestUsers_List(t *testing.T) {
+	clear(t)
 	length := 10
 	for i := 0; i < length; i++ {
 		user := &store.User{
@@ -143,9 +168,13 @@ func TestUsers_List(t *testing.T) {
 		assert.Equal(t, nil, err)
 	}
 
-	list, err := u.List(context.Background())
+	var list []UserDemo
+	err := u.List(context.Background(), &list)
 	assert.Equal(t, nil, err)
-	assert.Equal(t, length, len(list.Items))
+	assert.Equal(t, length, len(list))
+	for i := 0; i < len(list); i++ {
+		//t.Logf("%+v\n", list[i])
+	}
 	clear(t)
 }
 
@@ -166,6 +195,34 @@ func TestUsers_Update(t *testing.T) {
 		want.Introduction = "introduction"
 		err := u.Update(context.Background(), user.ID, want)
 		assert.Equal(t, nil, err)
+	})
+}
+
+func TestUsers_UpdateWithVal(t *testing.T) {
+	clear(t)
+	user := &store.User{
+		Account:  "account",
+		Password: "password",
+		Email:    "email",
+		Nick:     "nick",
+	}
+	err := u.Create(context.Background(), user)
+	assert.Equal(t, nil, err)
+
+	t.Run("return nil", func(t *testing.T) {
+		nick := "newNick"
+		want := &UserDemo{
+			Nick: nick,
+		}
+		err := u.Update(context.Background(), user.ID, want)
+		assert.Equal(t, nil, err)
+
+		got := &UserDemo{}
+		err = u.Get(context.Background(), user.ID, got)
+		assert.Equal(t, nil, err)
+
+		assert.Equal(t, want.Nick, got.Nick)
+
 	})
 }
 
