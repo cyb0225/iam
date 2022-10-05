@@ -49,7 +49,7 @@ func (u *userService) Register(ctx context.Context, req *model.RegisterRequest) 
 	}
 
 	// check the password and the email
-	if ok := util.JudgeEmail(req.Email); ok {
+	if ok := util.JudgeEmail(req.Email); !ok {
 		return nil, errno.WithCode(code.ErrEmailRequired, errors.New("email does not meet requirements"))
 	}
 	if ok := util.JudgePassword(req.Password); !ok {
@@ -101,7 +101,7 @@ func (u *userService) GetCode(ctx context.Context, toEmail string) (*model.GetCo
 		return nil, errno.WithCode(code.ErrSendEmail, err)
 	}
 
-	// stored code, it will not return a error
+	// stored code, it will not return an error
 	_ = u.c.Code().Create(ctx, vcode, &cache.CodeValue{Email: vcode})
 	return &model.GetCodeResponse{Code: vcode}, nil
 }

@@ -178,27 +178,17 @@ func TestUsers_List(t *testing.T) {
 	clear(t)
 }
 
-func TestUsers_Update(t *testing.T) {
-	clear(t)
-
-	user := &store.User{
-		Account:  "account",
-		Password: "password",
-		Email:    "email",
-		Nick:     "nick",
-	}
-	err := u.Create(context.Background(), user)
-	assert.Equal(t, nil, err)
-
-	t.Run("return nil", func(t *testing.T) {
-		want := user
-		want.Introduction = "introduction"
-		err := u.Update(context.Background(), user.ID, want)
-		assert.Equal(t, nil, err)
-	})
+type UpdateUser struct {
+	ID uint64 `json:"ID"`
+	//Nick string `json:"nick"`
+	Introduction string `json:"introduction"`
+	University   string `json:"university"`
+	Company      string `json:"company"`
+	Blog         string `json:"blog"`
+	Github       string `json:"github"`
 }
 
-func TestUsers_UpdateWithVal(t *testing.T) {
+func TestUsers_Update(t *testing.T) {
 	clear(t)
 	user := &store.User{
 		Account:  "account",
@@ -210,18 +200,20 @@ func TestUsers_UpdateWithVal(t *testing.T) {
 	assert.Equal(t, nil, err)
 
 	t.Run("return nil", func(t *testing.T) {
-		nick := "newNick"
-		want := &UserDemo{
-			Nick: nick,
+		want := &UpdateUser{
+			//Nick: "nick",
+			Introduction: "introduction",
+			Blog:         "blog",
+			Github:       "github",
 		}
 		err := u.Update(context.Background(), user.ID, want)
 		assert.Equal(t, nil, err)
 
-		got := &UserDemo{}
+		got := &UpdateUser{}
 		err = u.Get(context.Background(), user.ID, got)
 		assert.Equal(t, nil, err)
 
-		assert.Equal(t, want.Nick, got.Nick)
+		assert.Equal(t, want.Introduction, got.Introduction)
 
 	})
 }

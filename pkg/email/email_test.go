@@ -35,7 +35,7 @@ func TestSendEmail(t *testing.T) {
 		assert.NotEqual(t, nil, err)
 	})
 
-	opts.SMTPKey = "tqzrnigzcbjiehbc"
+	opts.SMTPKey = "123"
 
 	if _, err := New(opts); err != nil {
 		t.Fatal("init email failed")

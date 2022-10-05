@@ -15,6 +15,6 @@ var (
 )
 
 func New() (*gocache.Cache, error) {
-	Ca := gocache.New(5*time.Minute, 10*time.Minute)
+	Ca = gocache.New(5*time.Minute, 10*time.Minute)
 	return Ca, nil
 }

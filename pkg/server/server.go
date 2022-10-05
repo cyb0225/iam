@@ -32,7 +32,7 @@ func Run(opts Option, handler http.Handler) {
 	go func() {
 		log.Printf("Start http server %s...\n", opts.Port)
 		if err := s.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("ListenAndServe err: %v", err)
+			//log.Fatalf("ListenAndServe err: %v", err)
 		}
 	}()
 

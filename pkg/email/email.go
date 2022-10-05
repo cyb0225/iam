@@ -13,8 +13,8 @@ import (
 )
 
 type Option struct {
-	SMTPKey   string `yaml:"smtp_key"`
-	FromEmail string `yaml:"from_email"` // the which account to send the email
+	SMTPKey   string `yaml:"smtpKey"`
+	FromEmail string `yaml:"fromEmail"`
 }
 
 var (

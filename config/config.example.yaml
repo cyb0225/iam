@@ -13,7 +13,7 @@ mysql:
 log:
   level: "debug"
   accessLog: "./storage/log/access.log"
-  errorLog: "./storage/log/access.log"
+  errorLog: "./storage/log/error.log"
   console: true
 
 email:

@@ -5,7 +5,10 @@
 
 ## 目录结构
 
+## 项目api地址
+Apifox 在线文档
 
+`https://www.apifox.cn/apidoc/shared-05a28f7d-1714-41f6-94fa-566e82e0bfcf`
 
 ## 第一阶段
 ### 功能特性

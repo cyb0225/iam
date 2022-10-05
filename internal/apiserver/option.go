@@ -16,8 +16,7 @@ import (
 
 // Option stored the whole options that apiserver needs.
 type Option struct {
-	Mysql db.Option `yaml:"mysql"`
-	//Redis  redis.Option  `yaml:"redis"`
+	Mysql  db.Option     `yaml:"mysql"`
 	Log    log.Option    `yaml:"log"`
 	Email  email.Option  `yaml:"email"`
 	Server server.Option `yaml:"server"`
@@ -54,6 +53,6 @@ func NewOption(config string) (*Option, error) {
 
 	Opts = opts
 
-	fmt.Printf("%#+v", *opts)
+	fmt.Printf("%#+v\n", *opts)
 	return opts, nil
 }

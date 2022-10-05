@@ -10,13 +10,12 @@ mysql:
   database: "iam"
   logFile: "./storage/db/db.log"
 
+email:
+  smtpKey: "tqzrnigzcbjiehbc"
+  fromEmail: "yeebingchen@qq.com"
+
 log:
   level: "debug"
   accessLog: "./storage/log/access.log"
-  errorLog: "./storage/log/access.log"
+  errorLog: "./storage/log/error.log"
   console: true
-
-email:
-  smtp_key: "tqzrnigzcbjiehbc"
-  from_email: "yeebingchen@qq.com"
-

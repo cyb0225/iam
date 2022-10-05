@@ -46,7 +46,6 @@ func initController(r *gin.Engine) {
 	c := gocache.New(cache.Ca)
 
 	app := r.Group("/iam")
-
 	v1 := app.Group("/v1")
 	{
 		userv1 := v1.Group("/user")

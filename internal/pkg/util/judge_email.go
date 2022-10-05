@@ -6,6 +6,5 @@
 package util
 
 func JudgeEmail(email string) bool {
-
 	return true
 }
