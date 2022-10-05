@@ -8,7 +8,6 @@ package errno
 import (
 	"errors"
 	"fmt"
-
 	pkgerr "github.com/pkg/errors"
 )
 
@@ -29,7 +28,8 @@ func WithCode(code int, err error) error {
 func WithCodef(code int, format string, args ...interface{}) error {
 	return &withCode{
 		code: code,
-		err:  fmt.Errorf(format, args...),
+		//err:  fmt.Errorf(format, args...),
+		err: errors.New(fmt.Sprint(format, args)),
 	}
 }
 

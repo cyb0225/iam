@@ -58,7 +58,7 @@ type ChangeEmailRequest struct {
 }
 
 type UserUpdateRequest struct {
-	ID           uint64 `json:"ID"` // must have the ID, but not let front-end change it.
+	ID           uint64 `json:"_"` // must have the ID, but not let front-end change it.
 	Nick         string `json:"nick"`
 	Introduction string `json:"introduction"`
 	University   string `json:"university"`

@@ -21,7 +21,7 @@ func Recovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				log.Logger.Error("panic", zap.Any("err", err), zap.String("stack", string(debug.Stack())))
+				log.WithRequestID(c).Error("panic", zap.Any("err", err), zap.String("stack", string(debug.Stack())))
 				// send email
 				subject := "iam 服务警报"
 				text := []byte("出现panic错误，请及时处理")

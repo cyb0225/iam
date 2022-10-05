@@ -18,16 +18,6 @@ func TestMustRegister(t *testing.T) {
 		MustRegister(coder)
 	})
 
-	//t.Run("must register code 0 error", func(t *testing.T) {
-	//	coder := New(0, 200, "0 code panic")
-	//	MustRegister(coder)
-	//})
-
-	//t.Run("must register repeated code", func(t *testing.T) {
-	//	coder := New(100, 200, "repeated code panic")
-	//	MustRegister(coder)
-	//})
-
 	t.Run("register repeated success", func(t *testing.T) {
 		coder := New(100, 200, "override")
 		Register(coder)

@@ -39,4 +39,13 @@ const (
 
 	// ErrGetUserIDFromCtx -500: Get User ID from context failed
 	ErrGetUserIDFromCtx
+
+	// ErrPasswordTooShort -200: Password is shorter than 8.
+	ErrPasswordTooShort
+
+	// ErrPasswordTooLong -200: Password is longer than 26.
+	ErrPasswordTooLong
+
+	// ErrPasswordTooSimple -200: The kind of character in password is less than 2.
+	ErrPasswordTooSimple
 )

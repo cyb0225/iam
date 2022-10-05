@@ -5,6 +5,10 @@
 
 package util
 
+import "regexp"
+
 func JudgeEmail(email string) bool {
-	return true
+	pattern := `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*`
+	reg := regexp.MustCompile(pattern)
+	return reg.MatchString(email)
 }

@@ -23,10 +23,10 @@ type UserSrv interface {
 	GetCode(ctx context.Context, toEmail string) (*model.GetCodeResponse, error)
 	Login(ctx context.Context, req *model.LoginRequest) (*model.LoginResponse, error)
 	List(ctx context.Context) (*model.UserListResponse, error)
-	ChangePassword(ctx context.Context, userID uint64, req *model.ChangePasswordRequest) error
-	ChangeEmail(ctx context.Context, userID uint64, req *model.ChangeEmailRequest) error
-	Logout(ctx context.Context, token string) error
-	Update(ctx context.Context, userID uint64, request *model.UserUpdateRequest) error
+	ChangePassword(ctx context.Context, req *model.ChangePasswordRequest) error
+	ChangeEmail(ctx context.Context, req *model.ChangeEmailRequest) error
+	Logout(ctx context.Context) error
+	Update(ctx context.Context, request *model.UserUpdateRequest) error
 	UploadAvatar(ctx context.Context, avatar string) error
 }
 
@@ -52,8 +52,8 @@ func (u *userService) Register(ctx context.Context, req *model.RegisterRequest) 
 	if ok := util.JudgeEmail(req.Email); !ok {
 		return nil, errno.WithCode(code.ErrEmailRequired, errors.New("email does not meet requirements"))
 	}
-	if ok := util.JudgePassword(req.Password); !ok {
-		return nil, errno.WithCode(code.ErrPasswordRequired, errors.New("password does not meet requirements"))
+	if err := util.JudgePassword(req.Password); err != nil {
+		return nil, err
 	}
 
 	// create user.
@@ -133,7 +133,12 @@ func (u *userService) List(ctx context.Context) (*model.UserListResponse, error)
 	return res, nil
 }
 
-func (u *userService) ChangePassword(ctx context.Context, userID uint64, req *model.ChangePasswordRequest) error {
+func (u *userService) ChangePassword(ctx context.Context, req *model.ChangePasswordRequest) error {
+	userID := ctx.Value("id").(uint64)
+	if userID == 0 {
+		return errno.WithCode(code.ErrGetUserIDFromCtx, errors.New("get user id from context failed"))
+	}
+
 	// check the old password.
 	user := &store.User{}
 	if err := u.s.User().Get(ctx, userID, user); err != nil {
@@ -144,8 +149,8 @@ func (u *userService) ChangePassword(ctx context.Context, userID uint64, req *mo
 	}
 
 	// check the strength of new password.
-	if ok := util.JudgePassword(req.OldPassword); !ok {
-		return errno.WithCode(code.ErrPasswordRequired, errors.New("password does not meet requirements"))
+	if err := util.JudgePassword(req.OldPassword); err != nil {
+		return err
 	}
 
 	// update user's password field.
@@ -155,7 +160,12 @@ func (u *userService) ChangePassword(ctx context.Context, userID uint64, req *mo
 	return u.s.User().Update(ctx, userID, updateUser)
 }
 
-func (u *userService) ChangeEmail(ctx context.Context, userID uint64, req *model.ChangeEmailRequest) error {
+func (u *userService) ChangeEmail(ctx context.Context, req *model.ChangeEmailRequest) error {
+	userID := ctx.Value("id").(uint64)
+	if userID == 0 {
+		return errno.WithCode(code.ErrGetUserIDFromCtx, errors.New("get user id from context failed"))
+	}
+
 	// check the code.
 	if _, err := u.c.Code().Get(ctx, req.Code); err != nil {
 		return err
@@ -168,13 +178,23 @@ func (u *userService) ChangeEmail(ctx context.Context, userID uint64, req *model
 	return u.s.User().Update(ctx, userID, user)
 }
 
-func (u *userService) Logout(ctx context.Context, token string) error {
+func (u *userService) Logout(ctx context.Context) error {
+	token := ctx.Value("token").(string)
+	if len(token) == 0 {
+		return errno.WithCode(code.ErrGetTokenFromCtx, errors.New("get token from context failed"))
+	}
+
 	// delete token in cache.
 	_ = u.c.Token().Delete(ctx, token)
 	return nil
 }
 
-func (u *userService) Update(ctx context.Context, userID uint64, request *model.UserUpdateRequest) error {
+func (u *userService) Update(ctx context.Context, request *model.UserUpdateRequest) error {
+	userID := ctx.Value("id").(uint64)
+	if userID == 0 {
+		return errno.WithCode(code.ErrGetUserIDFromCtx, errors.New("get user id from context failed"))
+	}
+
 	// updates the user's information
 	return u.s.User().Update(ctx, userID, request)
 }

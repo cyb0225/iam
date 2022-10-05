@@ -7,7 +7,9 @@ package errno
 
 import (
 	"errors"
+	"fmt"
 	pkgerr "github.com/pkg/errors"
+	"go.uber.org/zap"
 
 	"testing"
 )
@@ -16,15 +18,17 @@ import (
 func TestStackError(t *testing.T) {
 	err := StackA()
 	t.Logf("%+v", StackError(err))
+	logger := zap.NewExample()
+	logger.Error("", zap.Any("", StackError(err)))
 }
 
 func StackA() error {
 	err := StackB()
-	return Wrap(err, "got err in StackA")
+	return err
 }
 
 func StackB() error {
-	err := WithCodef(200, "init err in StackB")
+	err := fmt.Errorf("error")
 	return err
 }
 

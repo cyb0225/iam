@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	KeyRequestID = "requestID"
+	KeyRequestID = "X-Request-ID"
 )
 
 // WithRequestID set requestID into log fields
@@ -24,16 +24,14 @@ func WithRequestID(ctx context.Context) *zap.Logger {
 		lg = clone(Logger)
 	}
 
-	if val := ctx.Value(KeyRequestID); val != nil {
-		requestID := val.(string)
-		lg = lg.With(zap.String(KeyRequestID, requestID))
+	if requestID := ctx.Value(KeyRequestID); requestID != nil {
+		lg = lg.With(zap.Any(KeyRequestID, requestID))
 	}
 
 	return lg
 }
 
 func clone(logger *zap.Logger) *zap.Logger {
-	copy := *logger
-
-	return &copy
+	cl := *logger
+	return &cl
 }

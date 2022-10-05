@@ -26,4 +26,7 @@ func init() {
 	errno.RegisterWithArgs(ErrGetToken, 400, "Get Token from head failed")
 	errno.RegisterWithArgs(ErrGetTokenFromCtx, 500, "Get Token from context failed")
 	errno.RegisterWithArgs(ErrGetUserIDFromCtx, 500, "Get User ID from context failed")
+	errno.RegisterWithArgs(ErrPasswordTooShort, 200, "Password is shorter than 8.")
+	errno.RegisterWithArgs(ErrPasswordTooLong, 200, "Password is longer than 26.")
+	errno.RegisterWithArgs(ErrPasswordTooSimple, 200, "The kind of character in password is less than 2.")
 }
