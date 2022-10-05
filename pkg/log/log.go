@@ -25,6 +25,12 @@ type Option struct {
 	Console   bool   `yaml:"console"` // console or json
 }
 
+func (opts *Option) Valid() []error {
+	var err []error
+
+	return err
+}
+
 var (
 	maxSize    = 100 // MB
 	maxAge     = 7   //days

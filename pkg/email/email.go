@@ -17,6 +17,12 @@ type Option struct {
 	FromEmail string `yaml:"fromEmail"`
 }
 
+func (opts *Option) Valid() []error {
+	var err []error
+
+	return err
+}
+
 var (
 	Pool *email.Pool
 

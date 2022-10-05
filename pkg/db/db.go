@@ -30,6 +30,12 @@ type Option struct {
 	LogFile  string `yaml:"logFile"`
 }
 
+func (opts *Option) Valid() []error {
+	var err []error
+
+	return err
+}
+
 var (
 	// connect pool
 	maxIdleConnections    = 100

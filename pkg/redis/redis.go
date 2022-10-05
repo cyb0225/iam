@@ -17,6 +17,12 @@ type Option struct {
 	DB       int    `yaml:"DB"`
 }
 
+func (opts *Option) Valid() []error {
+	var err []error
+
+	return err
+}
+
 // New returns a client to the Redis Server specified by opts.
 func New(opts Option) (*redis.Client, error) {
 	DB = redis.NewClient(&redis.Options{

@@ -1,5 +1,5 @@
 server:
-  mode: "debug"
+  mode: "debug" # 有 debug 和 release 模式
   port: "12345"
 
 mysql:
@@ -8,15 +8,15 @@ mysql:
   username: "root"
   password: "123456"
   database: "iam"
-  logFile: "./storage/db/db.log"
+  logFile: "./storage/db/db.log" # 日志输出地址
 
 log:
   level: "debug"
   accessLog: "./storage/log/access.log"
   errorLog: "./storage/log/error.log"
-  console: true
+  console: true # true代表以console形式输出日志， false代表以json形式输出日志
 
 email:
-  smtp_key: ""
-  from_email: ""
+  smtp_key: "" # 以qq邮箱为例，需要取设置中开始 smtp，填写相应密钥
+  from_email: "" # 邮件的发送人的email地址
 

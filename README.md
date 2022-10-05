@@ -1,11 +1,15 @@
 # iam
 统一资源调度系统
 
-`参考项目地址:https://github.com/marmotedu/iam`
+[参考项目地址](https://github.com/marmotedu/iam)
 
-#### Apifox 在线文档
-`https://www.apifox.cn/apidoc/shared-05a28f7d-1714-41f6-94fa-566e82e0bfcf`
+[文档地址](https://www.apifox.cn/apidoc/shared-05a28f7d-1714-41f6-94fa-566e82e0bfcf)
+`里面提供的案例参数没有太多参考意义，因为他强依赖于数据库环境。详细说明请看接口文档的参数说明。`
 
+#### 项目部署地址
+
+
+`可以参照这个根地址发送api请求`
 
 ## 第一阶段
 ### 功能特性
@@ -41,7 +45,8 @@
 `但前端还没写好`
 
 后端部署
-1. 普通部署
+修改[配置文件](config/config.example.yaml)重命名为`config.yaml`, 填写相关配置.
+2. 普通部署
 
 ```shell
 go mod tidy # 下载依赖

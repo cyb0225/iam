@@ -17,6 +17,12 @@ type Option struct {
 	Port string `yaml:"port"`
 }
 
+func (opts *Option) Valid() []error {
+	var err []error
+
+	return err
+}
+
 // Run start http server.
 func Run(opts Option, handler http.Handler) {
 
