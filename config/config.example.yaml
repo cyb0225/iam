@@ -17,5 +17,5 @@ log:
   console: true # true代表以console形式输出日志， false代表以json形式输出日志
 
 email:
-  smtp_key: "" # 以qq邮箱为例，需要取设置中开始 smtp，填写相应密钥
-  from_email: "" # 邮件的发送人的email地址
+  smtpKey: "" # 以qq邮箱为例，需要取设置中开始 smtp，填写相应密钥
+  fromEmail: "" # 邮件的发送人的email地址
