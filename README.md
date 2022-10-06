@@ -73,7 +73,7 @@ windows 命令行下面的换行可能会报错，需要去掉换行符，将所
 ```shell
 # 1.构建运行mysql容器
 docker run --name iam-mysql -itd -p 3306:3306 \
--e MYSQL_ROOT_PASSWORD=123456
+-e MYSQL_ROOT_PASSWORD=123456 \
 -v $PWD/storage/mysql/data:/var/lib/mysql \
 --restart=always \
 mysql \
@@ -95,7 +95,7 @@ docker run --name iam-server \
 -itd -p 123456:123456 \
 --net=host \
 -v $PWD/config:/config \
--v $PWD/storage/log:/storage
+-v $PWD/storage/log:/storage \
 iam-server
 
 
