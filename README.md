@@ -68,7 +68,42 @@ go build cmd/apiserver/main.go
 
 2. Docker 部署
 
-还没写好
+windows 命令行下面的换行可能会报错，需要去掉换行符，将所有指令放到同一行
+
+```shell
+# 1.构建运行mysql容器
+docker run --name iam-mysql -itd -p 3306:3306 \
+-e MYSQL_ROOT_PASSWORD=123456
+-v $PWD/storage/mysql/data:/var/lib/mysql \
+--restart=always \
+mysql \
+--character-set-server=utf8mb4 \
+--collation-server=utf8mb4_general_ci 
+
+
+# windows
+docker run --name iam-mysql -itd -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -v $PWD/storage/mysql/data:/var/lib/mysql --restart=always  mysql --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci 
+
+# 2. 读取数据库表
+# 连接进mysql容器，执行deploy中的sql文件
+
+# 3. 创建iam镜像
+docker build . -t iam-server
+
+# 4. 运行iam容器
+docker run --name iam-server \
+-itd -p 123456:123456 \
+--net=host \
+-v $PWD/config:/config \
+-v $PWD/storage/log:/storage
+iam-server
+
+
+# windows
+docker run --name iam-server  -itd -p 12345:12345 --net=host -v $PWD/config:/config -v $PWD/storage/log:/storage iam-server
+
+```
+`docker-compose 还没写好`
 
 ```shell
 

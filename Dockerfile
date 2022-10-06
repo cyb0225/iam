@@ -7,7 +7,7 @@ WORKDIR /app
 
 ENV GOPROXY=https://goproxy.cn,direct
 
-COPY .. .
+COPY . .
 
 RUN go build -o main ./cmd/apiserver/main.go
 
@@ -16,11 +16,10 @@ FROM alpine:latest as build_1
 RUN apk --no-cache add ca-certificates
 
 COPY --from=build /app/main ./
-COPY --from=build /app/config ./
 ENV PORT=12345 RUN_MODE=release
 
-EXPOSE $PORT
+EXPOSE 12345
 
-VOLUME ["/storage"]
+VOLUME ["/storage", "/config"]
 
-CMD ["./main", "--port=$PORT", "--mode=$RUN_MODE"]
+CMD ["./main", "--port=12345", "--mode=$RUN_MODE"]
