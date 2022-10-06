@@ -92,7 +92,7 @@ docker build . -t iam-server
 
 # 4. 运行iam容器
 docker run --name iam-server \
--itd -p 123456:123456 \
+-itd -p 12345:12345 \
 --net=host \
 -v $PWD/config:/config \
 -v $PWD/storage/log:/storage \
