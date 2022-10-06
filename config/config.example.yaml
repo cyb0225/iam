@@ -19,4 +19,3 @@ log:
 email:
   smtp_key: "" # 以qq邮箱为例，需要取设置中开始 smtp，填写相应密钥
   from_email: "" # 邮件的发送人的email地址
-

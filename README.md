@@ -68,6 +68,9 @@ go build cmd/apiserver/main.go
 
 2. Docker 部署
 
+还没写好
+
+```shell
 
 ## 关于作者
     YeeBing Chen yeebingchen@qq.com

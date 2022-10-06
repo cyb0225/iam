@@ -25,6 +25,7 @@ var (
 func Run() {
 	// set flags
 	SetFlags()
+	pflag.Parse()
 
 	// load config
 	opts, err := NewOption(configPath)
