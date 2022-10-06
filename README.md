@@ -103,9 +103,9 @@ iam-server
 docker run --name iam-server  -itd -p 12345:12345 --net=host -v $PWD/config:/config -v $PWD/storage/log:/storage iam-server
 
 ```
+
 `docker-compose 还没写好`
 
-```shell
 
 ## 关于作者
     YeeBing Chen yeebingchen@qq.com
